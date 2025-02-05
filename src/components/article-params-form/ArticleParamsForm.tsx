@@ -40,14 +40,16 @@ export const ArticleParamsForm = ({
 	const formRef = useRef<HTMLDivElement>(null);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-	// Состояния для хранения текущих значений параметров
-	const [bgColor, setBgColor] = useState(params.backgroundColor);
-	const [fontSize, setFontSize] = useState(params.fontSizeOption);
-	const [fontFamily, setFontFamily] = useState(params.fontFamilyOption);
-	const [width, setWidth] = useState(params.contentWidth);
-	const [color, setColor] = useState(params.fontColor);
+	// Используем defaultArticleState для инициализации состояний
+	const [bgColor, setBgColor] = useState(defaultArticleState.backgroundColor);
+	const [fontSize, setFontSize] = useState(defaultArticleState.fontSizeOption);
+	const [fontFamily, setFontFamily] = useState(
+		defaultArticleState.fontFamilyOption
+	);
+	const [width, setWidth] = useState(defaultArticleState.contentWidth);
+	const [color, setColor] = useState(defaultArticleState.fontColor);
 
-	// Обрабоитчик отправки формы
+	// Обработчик отправки формы
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		onParamsChange({
@@ -70,7 +72,7 @@ export const ArticleParamsForm = ({
 		setColor(defaultArticleState.fontColor);
 	};
 
-	//Для стилизации боковой панели
+	// Для стилизации боковой панели
 	const sidebarClass = clsx(styles.container, {
 		[styles.container_open]: isSidebarOpen,
 	});
@@ -98,12 +100,6 @@ export const ArticleParamsForm = ({
 						Задайте параметры
 					</Text>
 					<Select
-						options={backgroundColors}
-						selected={bgColor}
-						onChange={setBgColor}
-						title='Цвет фона'
-					/>
-					<Select
 						options={fontFamilyOptions}
 						selected={fontFamily}
 						onChange={setFontFamily}
@@ -122,15 +118,23 @@ export const ArticleParamsForm = ({
 						onChange={setColor}
 						title='Цвет шрифта'
 					/>
+					<div className={styles.separatorCentered}>
+						<Separator />
+					</div>
+					<Select
+						options={backgroundColors}
+						selected={bgColor}
+						onChange={setBgColor}
+						title='Цвет фона'
+					/>
 					<Select
 						options={contentWidthArr}
 						selected={width}
 						onChange={setWidth}
 						title='Ширина контента'
 					/>
-					<Separator />
 					<div className={styles.bottomContainer}>
-						<Button title='Сбросить' type='clear' />
+						<Button title='Сбросить' type='clear' onClick={handleReset} />
 						<Button title='Применить' type='apply' />
 					</div>
 				</form>
